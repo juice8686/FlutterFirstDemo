@@ -1,16 +1,20 @@
-# flutter_juice
+Flutter 搭建流程
+   1，下载flutter sdk
+   2, 添加到环境变量
+   3, android studio 下载flutter插件，dart插件。
+   4, 中国设置特殊的环境   cmd命令
+       set PUB_HOSTED_URL=https://pub.flutter-io.cn
+       set FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 
-A new Flutter application.
 
-## Getting Started
+Flutter 打包流程
+第一步：签名
+和设置android签名一样在Android项目目录下的build.gradle里面设置好签名。
 
-This project is a starting point for a Flutter application.
+第二步：执行打包命令
 
-A few resources to get you started if this is your first Flutter project:
+在flutter项目目录下执行下面的命令
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+打Release包：执行flutter build apk --release 或直接 flutter build apk(默认打release包)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+打Debug包： 执行flutter build apk --debug
