@@ -1,0 +1,167 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+
+def releaseTime() {
+    return new Date().format("MMddHHmm")
+}
+
+android {
+    compileSdkVersion 28
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    signingConfigs {
+        config {
+//            storeFile file('../onecard.keystore')
+            storeFile file('E:/flutter_juice/flutter_juice/android/onecard.keystore')
+            keyAlias 'onecard'
+            keyPassword 'onecardandroid'
+            storePassword 'onecardandroid'
+        }
+    }
+
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.example.flutter_juice"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.config
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "${variant.productFlavors[0].name}${variant.productFlavors[1].name}_v${defaultConfig.versionName}_${releaseTime()}.apk"
+//                    outputFileName = "${defaultConfig.versionName}_${releaseTime()}.apk"
+                }
+            }
+        }
+
+        debug {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.config
+        }
+    }
+
+
+    productFlavors {
+        flavorDimensions "brand", "environment"
+        JuiceGoogle{
+            dimension "brand"
+            applicationId "com.example.flutter_juice"
+            signingConfig signingConfigs.config
+            manifestPlaceholders = [
+                    CHANNEL : "GOOGLEPLAY",
+                    PRODUCT_NAME : "KREDITNESIA",
+                    FACEBOOKID : "224630438372019",
+                    ACCOUNT_KIT_CLIENT_TOKEN:"dbaf7a0ec20218fd5a87d8d5a7e428f0"
+            ]
+            matchingFallbacks = ['online']
+        }
+
+        JuiceHuawei{
+            dimension "brand"
+            applicationId "com.example.flutter_juice"
+            signingConfig signingConfigs.config
+            manifestPlaceholders = [
+                    CHANNEL : "GOOGLEPLAY",
+                    PRODUCT_NAME : "KREDITNESIA",
+                    FACEBOOKID : "224630438372019",
+                    ACCOUNT_KIT_CLIENT_TOKEN:"dbaf7a0ec20218fd5a87d8d5a7e428f0"
+            ]
+            matchingFallbacks = ['online']
+        }
+        Dev {
+            dimension "environment"
+            buildConfigField("String", "HOSTMANE", "\"http://kartuone-app-test.cf57eaa4fd3624fc39ab5ed0955c6048a.cn-beijing.alicontainer.com/appserver\"")
+            buildConfigField("String", "H5NAME", "\"http://9f-open-env.oss-cn-beijing.aliyuncs.com/wanka-haiwai-pub/\"")
+            manifestPlaceholders = [
+                    HEATMAP : "sa5028440e",
+                    TDPARTNERCODE:"jiufu_id"
+            ]
+        }
+        Online{
+            dimension "environment"
+            buildConfigField("String", "HOSTMANE", "\"https://api.kartuserba.com/appserver\"")
+            buildConfigField("String", "H5NAME", "\"https://prod-pub-yajiada.oss-ap-southeast-5.aliyuncs.com/\"")
+            manifestPlaceholders = [
+                    HEATMAP : "sa6e151b57",
+                    TDPARTNERCODE:"jiufu_id"
+            ]
+        }
+    }
+
+
+    //打包环境过滤
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        if(names[0] != "JuiceGoogle" && names[1] != "Online"){
+            setIgnore(true)
+        }
+
+//        else if(names[0] == "KredinesiaGoogle" && names[1] == "OnlineWith86"||
+//                names[0] == "KredinesiaHuawei" && names[1] == "Dev"||
+//                names[0] == "KredinesiaHuawei" && names[1] == "OnlineWith86"||
+//                names[0] == "KredinesiaHuawei" && names[1] == "Test"||
+//                names[0] == "KredinesiaXiaomi" && names[1] == "Dev"||
+//                names[0] == "KredinesiaXiaomi" && names[1] == "OnlineWith86"||
+//                names[0] == "KredinesiaXiaomi" && names[1] == "Test"||
+//                names[0] == "KredinesiaOppo" && names[1] == "Dev"||
+//                names[0] == "KredinesiaOppo" && names[1] == "OnlineWith86"||
+//                names[0] == "KredinesiaOppo" && names[1] == "Test"||
+//                names[0] == "KredinesiaVivo" && names[1] == "Dev"||
+//                names[0] == "KredinesiaVivo" && names[1] == "OnlineWith86"||
+//                names[0] == "KredinesiaVivo" && names[1] == "Test"||
+//                names[0] == "KredinesiaSamsung" && names[1] == "Dev"||
+//                names[0] == "KredinesiaSamsung" && names[1] == "Test"||
+//                names[0] == "KredinesiaSamsung" && names[1] == "OnlineWith86"){
+//            setIgnore(true)
+//        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
