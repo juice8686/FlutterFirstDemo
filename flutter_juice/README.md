@@ -1,3 +1,5 @@
+https://github.com/juice8686/FlutterFirstDemo.git   项目地址
+
 Flutter 搭建流程
    1，下载flutter sdk
    2, 添加到环境变量

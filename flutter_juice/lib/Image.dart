@@ -6,78 +6,44 @@ void main() =>  runApp(new Nice());
 class Nice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var imageUrl = 'https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/topnav/tupian@2x-482fc011fc.png';
-    return Container(
-      width: double.infinity,
-      height: 100,
-      child: Image(
-        image: NetworkImage(imageUrl),
-        fit: BoxFit.fitHeight,
+    return  MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('首页'),
+        ),
+        body: HomeContent(),
+      ),
+      theme: ThemeData(primarySwatch: Colors.blueGrey),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Center(
+      child: Container(
+        // 圆形图片
+        child: ClipOval(
+            child: Image.network(
+              'https://sucai.suoluomei.cn/sucai_zs/images/20200215152501-1.png',
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            )),
+        // 另一张圆形图片的处理方法
+        // child: Image.network(
+        //   "https://sucai.suoluomei.cn/sucai_zs/images/20200226173152-1.jpg",
+        //   alignment: Alignment.bottomRight,
+        //   color: Colors.grey,
+        //   colorBlendMode: BlendMode.screen,
+        //   fit: BoxFit.cover,
+        //   // repeat: ImageRepeat.repeatY,
+        // ),
+        height: 300.0,
+        width: 300.0,
       ),
     );
   }
 }
-//
-//
-//
-// @override
-// Widget build(BuildContext context) {
-//   var imageUrl='https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/topnav/tupian@2x-482fc011fc.png';
-//   return  Container(
-//     color: Colors.grey,
-//     margin: EdgeInsets.only(top: 10, bottom: 10),
-//     padding: EdgeInsets.all(10),
-//     child: Column(
-//       children: [
-//         Container(
-//           width: double.infinity,
-//           height: 100,
-//           child: Image(
-//             image: NetworkImage(imageUrl),
-//             fit: BoxFit.cover,
-//           ),
-//         ),
-//         Container(
-//           width: double.infinity,
-//           height: 100,
-//           child: Image(
-//             image: NetworkImage(imageUrl),
-//             fit: BoxFit.fill,
-//           ),
-//         ),
-//         Container(
-//           width: double.infinity,
-//           height: 100,
-//           child: Image(
-//             image: NetworkImage(imageUrl),
-//             fit: BoxFit.contain,
-//           ),
-//         ),
-//         Container(
-//           width: double.infinity,
-//           height: 100,
-//           child: Image(
-//             image: NetworkImage(imageUrl),
-//             fit: BoxFit.scaleDown,
-//           ),
-//         ),
-//         Container(
-//           width: double.infinity,
-//           height: 100,
-//           child: Image(
-//             image: NetworkImage(imageUrl),
-//             fit: BoxFit.fitHeight,
-//           ),
-//         ),
-//         Container(
-//           width: double.infinity,
-//           height: 100,
-//           child: Image(
-//             image: NetworkImage(imageUrl),
-//             fit: BoxFit.fitWidth,
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
