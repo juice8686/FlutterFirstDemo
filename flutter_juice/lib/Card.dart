@@ -45,14 +45,14 @@ class HomeContent extends StatelessWidget {
           margin: EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              AspectRatio(
+              AspectRatio(//根据宽高比，自适应宽度或高度。
                 aspectRatio: 16 / 9,
                 child: Image.network(
                   value["imageUrl"],
                   fit: BoxFit.cover,
                 ),
               ),
-              ListTile(
+              ListTile(// 类似于adapter,填充数据用，绑定数据，渲染视图
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(value["imageUrl"]),
                 ),

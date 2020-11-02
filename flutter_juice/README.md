@@ -20,3 +20,9 @@ Flutter 打包流程
 打Release包：执行flutter build apk --release 或直接 flutter build apk(默认打release包)
 
 打Debug包： 执行flutter build apk --debug
+
+
+
+flutter 与 原生交互的两个问题
+项目默认引入是io.flutter.embedding.android.FlutterActivity，而不是io.flutter.app.FlutterActivity，采用中文网这个包，会造成各种问题，比如：编译不过、插件异常
+中文网中的调用方法是写在onCreate中，而注册语句是GeneratedPluginRegistrant.registerWith(this)，这个是不生效的，实际上应该写在configureFlutterEngine中，不需要实现onCreate

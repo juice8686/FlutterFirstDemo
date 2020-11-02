@@ -43,8 +43,8 @@ android {
 
     signingConfigs {
         config {
-//            storeFile file('../onecard.keystore')
-            storeFile file('E:/flutter_juice/flutter_juice/android/onecard.keystore')
+            storeFile file('../onecard.keystore')
+//            storeFile file('E:/flutter_juice/flutter_juice/android/onecard.keystore')
             keyAlias 'onecard'
             keyPassword 'onecardandroid'
             storePassword 'onecardandroid'
@@ -97,18 +97,18 @@ android {
             matchingFallbacks = ['online']
         }
 
-        JuiceHuawei{
-            dimension "brand"
-            applicationId "com.example.flutter_juice"
-            signingConfig signingConfigs.config
-            manifestPlaceholders = [
-                    CHANNEL : "GOOGLEPLAY",
-                    PRODUCT_NAME : "KREDITNESIA",
-                    FACEBOOKID : "224630438372019",
-                    ACCOUNT_KIT_CLIENT_TOKEN:"dbaf7a0ec20218fd5a87d8d5a7e428f0"
-            ]
-            matchingFallbacks = ['online']
-        }
+//        JuiceHuawei{
+//            dimension "brand"
+//            applicationId "com.example.flutter_juice"
+//            signingConfig signingConfigs.config
+//            manifestPlaceholders = [
+//                    CHANNEL : "GOOGLEPLAY",
+//                    PRODUCT_NAME : "KREDITNESIA",
+//                    FACEBOOKID : "224630438372019",
+//                    ACCOUNT_KIT_CLIENT_TOKEN:"dbaf7a0ec20218fd5a87d8d5a7e428f0"
+//            ]
+//            matchingFallbacks = ['online']
+//        }
         Dev {
             dimension "environment"
             buildConfigField("String", "HOSTMANE", "\"http://kartuone-app-test.cf57eaa4fd3624fc39ab5ed0955c6048a.cn-beijing.alicontainer.com/appserver\"")

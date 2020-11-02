@@ -77,6 +77,7 @@ class ButtonPage extends StatelessWidget {
               Container(
                 height: 50,
                 width: 200,
+                // decoration: new BoxDecoration,
                 child: RaisedButton(
                   child: Text('设置按钮宽度高度'),
                   onPressed: () {},
@@ -88,6 +89,11 @@ class ButtonPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Expanded(
+                child: RaisedButton(
+                  child: Text('自适应按钮'),
+                  onPressed: () {},
+                ),
+              ),Expanded(
                 child: RaisedButton(
                   child: Text('自适应按钮'),
                   onPressed: () {},
