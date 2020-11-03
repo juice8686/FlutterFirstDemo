@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('标题栏title'),
+          title: Text(
+              'Flutter实战'
+          ),
+          centerTitle: true,
         ),
         body: AndroidPlatformPage(),
         bottomNavigationBar: MyBottomNavigationBar(),
