@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_juice/pages/HomePage.dart';
+import 'package:flutter_juice/pages/CreditPage.dart';
+import 'package:flutter_juice/pages/PayPage.dart';
+import 'package:flutter_juice/pages/MinePage.dart';
 
 /**
  * 直接调用app里原生平台里的相关方法（区别于插件开发：插件开发也是利用methodChanneljiaohu
@@ -9,22 +13,112 @@ import 'package:flutter/services.dart';
  * ）
  */
 import 'package:flutter/cupertino.dart';
-void main() =>  runApp(new MyApp());
+
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('首页'),
+          title: Text('标题栏title'),
         ),
         body: AndroidPlatformPage(),
+        bottomNavigationBar: MyBottomNavigationBar(),
       ),
       theme: ThemeData(primarySwatch: Colors.blueGrey),
     );
   }
 }
+
+class MyBottomNavigationBar extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return MyBottomNaState();
+  }
+}
+
+class MyBottomNaState extends State<MyBottomNavigationBar> {
+  var _currentIndex = 0;
+  var _bottomColor = Colors.blue;
+  List<Widget> pageWidges = List();
+
+  @override
+  void initState() {
+    pageWidges.add(HomePage());
+    pageWidges.add(CreditPage());
+    pageWidges.add(PayPage());
+    pageWidges.add(MinePage());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+      appBar: AppBar(
+        title: Text('标题栏title'),
+      ),
+      body: pageWidges[_currentIndex], //todo 这个是核心；属于点击替换 widget;而不是push页面
+      bottomNavigationBar: Container(
+        child: BottomNavigationBar(
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Colors.red,
+          showUnselectedLabels: true,
+          selectedFontSize: 14,
+          unselectedFontSize: 14,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                ),
+                title: Container(
+                  child: Text(
+                    'home',
+                  ),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.access_time,
+                ),
+                title: Container(
+                  child: Text(
+                    'credit',
+                  ),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.palette,
+                ),
+                title: Container(
+                  child: Text(
+                    'pay',
+                  ),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.people,
+                ),
+                title: Container(
+                  child: Text(
+                    'mine',
+                  ),
+                )),
+          ],
+          currentIndex: _currentIndex,
+          onTap: (int index) {
+            setState(() {
+              _currentIndex = index;
+              _bottomColor = Colors.red;
+            });
+          },
+        ),
+      ),
+      // theme: ThemeData(primarySwatch: Colors.blueGrey),
+    ));
+  }
+}
+
 class AndroidPlatformPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => PageState();
@@ -42,9 +136,9 @@ class PageState extends State<AndroidPlatformPage> {
       "nativeSendMessage2Flutter"; //原生主动向flutter发送消息
 
   static final MethodChannel _MethodChannel =
-  MethodChannel(METHOD_CHANNEL); //平台交互通道
+      MethodChannel(METHOD_CHANNEL); //平台交互通道
   static final EventChannel _EventChannel =
-  EventChannel(EVENT_CHANNEL); //原生平台主动调用flutter端事件通道
+      EventChannel(EVENT_CHANNEL); //原生平台主动调用flutter端事件通道
 
   String _fromNativeInfo = "";
 
@@ -84,40 +178,36 @@ class PageState extends State<AndroidPlatformPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("平台交互"),
-        centerTitle: true,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text("flutter 与原生平台交互"),
-          Text(_fromNativeInfo),
-          RaisedButton(
-            color: Colors.orangeAccent,
-            child: Text("点击调用原生主动向flutter发消息方法"),
-            onPressed: () async{
-              String good=await _MethodChannel.invokeMethod(NATIVE_SEND_MESSAGE_TO_FLUTTER);
-              // print("原生调用过来的=$good");
-            },
-          ),
-          SizedBox(height: 30),
-          RaisedButton(
-            color: Colors.orangeAccent,
-            child: Text("调用原生平台Toast"),
-            onPressed: () {
-              showNativeToast("flutter调用原生android的Toast");
-            },
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text("flutter 与原生平台交互"),
+        Text(_fromNativeInfo),
+        RaisedButton(
+          color: Colors.orangeAccent,
+          child: Text("点击调用原生主动向flutter发消息方法"),
+          onPressed: () async {
+            String good = await _MethodChannel.invokeMethod(
+                NATIVE_SEND_MESSAGE_TO_FLUTTER);
+            // print("原生调用过来的=$good");
+          },
+        ),
+        SizedBox(height: 30),
+        RaisedButton(
+          color: Colors.orangeAccent,
+          child: Text("调用原生平台Toast"),
+          onPressed: () {
+            showNativeToast("flutter调用原生android的Toast");
+          },
+        ),
+      ],
     );
   }
 
   void showNativeToast(String content) async {
-    int result = await _MethodChannel.invokeMethod(NATIVE_SHOW_TOAST, {"msg": content});
+    int result =
+        await _MethodChannel.invokeMethod(NATIVE_SHOW_TOAST, {"msg": content});
     print("获取到原生的结果是=$result");
   }
 
