@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_juice/pages/HomePage.dart';
@@ -14,19 +16,34 @@ import 'package:flutter_juice/pages/MinePage.dart';
  */
 import 'package:flutter/cupertino.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(new MyApp());
+  if (Platform.isAndroid) {
+    //设置Android头部的导航栏透明
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-              'Flutter实战'
-          ),
-          centerTitle: true,
-        ),
+        // appBar: AppBar(
+        //   title: Text(
+        //       'Flutter实战'
+        //   ),
+        //   centerTitle: true,
+        // ),
+
+        appBar: PreferredSize(
+            //设置appbar的高度
+            child: AppBar(
+              // title: Text('我是标题'),
+            ),
+            preferredSize: Size.fromHeight(1000 * 0.07)),
         body: AndroidPlatformPage(),
         bottomNavigationBar: MyBottomNavigationBar(),
       ),
@@ -60,7 +77,7 @@ class MyBottomNaState extends State<MyBottomNavigationBar> {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
-        title: Text('标题栏title'),
+        title: Text('标题栏'),
       ),
       body: pageWidges[_currentIndex], //todo 这个是核心；属于点击替换 widget;而不是push页面
       bottomNavigationBar: Container(

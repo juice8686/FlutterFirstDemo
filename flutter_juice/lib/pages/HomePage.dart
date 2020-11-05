@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_juice/net/NetManager.dart';
 import 'package:toast/toast.dart';
+
+import 'dart:async';
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -86,8 +89,45 @@ class HomeState extends State<HomePage> {
                         )
                       ],
                     ))),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    height: 180,
+                    child: ListView(
+                      children: <Widget>[
+                        Container(
+                          height: 85,
+                          child: Image.network(
+                              "https://www.itying.com/images/flutter/3.png",
+                              fit: BoxFit.cover),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 85,
+                          child: Image.network(
+                              "https://www.itying.com/images/flutter/3.png",
+                              fit: BoxFit.cover),
+                        )
+                      ],
+                    ))),
           ],
-        )
+        ),
+        Center(
+          child: Column(
+            children: <Widget>[
+              CountDownWidget(
+                onCountDownFinishCallBack: (bool value,String reault) {
+                  if (value) {
+                    setState(() {
+                      // showAd = false;
+                      Toast.show("倒计时结束回调$reault", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -122,26 +162,53 @@ class HomeState extends State<HomePage> {
       netResult = "我是结果=$_content";
     });
   }
+}
 
-// dio.interceptors.add(InterceptorsWrapper(
-//     onRequest: (RequestOptions options){
-//       print("\n================== 请求数据 ==========================");
-//       print("url = ${options.uri.toString()}");
-//       print("headers = ${options.headers}");
-//       print("params = ${options.data}");
-//     },
-//     onResponse: (Response response){
-//       print("\n================== 响应数据 ==========================");
-//       print("code = ${response.statusCode}");
-//       print("data = ${response.data}");
-//       print("\n");
-//     },
-//     onError: (DioError e){
-//       print("\n================== 错误响应数据 ======================");
-//       print("type = ${e.type}");
-//       print("message = ${e.message}");
-//       print("stackTrace = ${e.stackTrace}");
-//       print("\n");
-//     }
-// ));
+
+
+class CountDownWidget extends StatefulWidget {
+  final onCountDownFinishCallBack;
+
+  CountDownWidget({Key key, @required this.onCountDownFinishCallBack})
+      : super(key: key);
+
+  @override
+  _CountDownWidgetState createState() => _CountDownWidgetState();
+}
+
+class _CountDownWidgetState extends State<CountDownWidget> {
+  var _seconds = 6;
+  Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '$_seconds',
+      style: TextStyle(fontSize: 17.0),
+    );
+  }
+
+  /// 启动倒计时的计时器。
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+      if (_seconds <= 1) {
+        widget.onCountDownFinishCallBack(true,'倒计时马上要结束了');
+        _cancelTimer();
+        return;
+      }
+      _seconds--;
+    });
+  }
+
+  /// 取消倒计时的计时器。
+  void _cancelTimer() {
+    _timer?.cancel();
+  }
 }
