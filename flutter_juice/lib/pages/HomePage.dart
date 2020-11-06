@@ -21,8 +21,35 @@ class HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: <Widget>[
+    return SingleChildScrollView(
+        child: Column(
+        children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(0.0),
+          width: MediaQuery.of(context).size.width,
+          alignment: AlignmentDirectional.center,
+          height: 37.0,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 237, 236, 237),
+              borderRadius: BorderRadius.circular(24.0)),
+          child: TextField(
+            // onSubmitted: onSubmitted,
+            // onTap: onTab,
+            cursorColor: Color.fromARGB(255, 0, 189, 96),
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(top: 8.0),
+                border: InputBorder.none,
+                hintText: 'please input',
+                hintStyle: TextStyle(
+                    fontSize: 17, color: Color.fromARGB(255, 192, 191, 191)),
+                prefixIcon: Icon(
+                  Icons.search,
+                  size: 25,
+                  color: Color.fromARGB(255, 128, 128, 128),
+                )),
+            style: TextStyle(fontSize: 17),
+          ),
+        ),
         Wrap(
           children: <Widget>[
             Expanded(
@@ -116,11 +143,12 @@ class HomeState extends State<HomePage> {
           child: Column(
             children: <Widget>[
               CountDownWidget(
-                onCountDownFinishCallBack: (bool value,String reault) {
+                onCountDownFinishCallBack: (bool value, String reault) {
                   if (value) {
                     setState(() {
                       // showAd = false;
-                      Toast.show("倒计时结束回调$reault", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                      Toast.show("倒计时结束回调$reault", context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                     });
                   }
                 },
@@ -128,7 +156,29 @@ class HomeState extends State<HomePage> {
             ],
           ),
         ),
+        InkWell(
+          child: Container(
+            // margin: EdgeInsets.fromLTRB(10,12,12,12),
+            margin: EdgeInsets.all(10),
+            width: MediaQuery.of(context).size.width,
+            alignment: AlignmentDirectional.center,
+            height: 67.0,
+            // decoration: BoxDecoration(
+            //     color: Color.fromARGB(255, 237, 236, 237),
+            //     borderRadius: BorderRadius.circular(4.0)),
+            child: Text(
+              '水波纹效果',
+              style: TextStyle(fontSize: 13.0, color: Colors.green),
+            ),
+          ),
+          onTap: () {
+            print('水波纹效果');
+            // Router.push(context, Router.personDetailPage,
+            //     {'personImgUrl': imgUrl, 'id': id});
+          },
+        ),
       ],
+      ),
     );
   }
 
@@ -146,7 +196,6 @@ class HomeState extends State<HomePage> {
    * 最简单的使用
    */
   void postRequest() async {
-
     // or new Dio with a BaseOptions instance.
     BaseOptions options = new BaseOptions(
       baseUrl: base_url,
@@ -157,14 +206,13 @@ class HomeState extends State<HomePage> {
     var response = await dio.post('/v2/banner/startup-page');
     var _content = response.data.toString();
     print("请求回来的数据=" + _content);
-    Toast.show("请求回来的数据=$_content", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+    Toast.show("请求回来的数据=$_content", context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     setState(() {
       netResult = "我是结果=$_content";
     });
   }
 }
-
-
 
 class CountDownWidget extends StatefulWidget {
   final onCountDownFinishCallBack;
@@ -189,7 +237,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '$_seconds',
+      '开始倒计时=$_seconds',
       style: TextStyle(fontSize: 17.0),
     );
   }
@@ -199,7 +247,7 @@ class _CountDownWidgetState extends State<CountDownWidget> {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {});
       if (_seconds <= 1) {
-        widget.onCountDownFinishCallBack(true,'倒计时马上要结束了');
+        widget.onCountDownFinishCallBack(true, '倒计时马上要结束了');
         _cancelTimer();
         return;
       }

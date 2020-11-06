@@ -76,6 +76,7 @@ class MyBottomNaState extends State<MyBottomNavigationBar> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
+          resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('标题栏'),
       ),
