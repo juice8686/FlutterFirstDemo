@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_juice/net/NetManager.dart';
 import 'package:flutter_juice/net/bean/CodeBean.dart';
 import 'package:flutter_juice/pages/DetailPage.dart';
+import 'file:///E:/flutter_juice/flutter_juice/lib/animation/AnimatedCrossFadeDemo.dart';
 import 'package:toast/toast.dart';
 
 import 'dart:async';
@@ -183,7 +184,8 @@ class HomeState extends State<HomePage> {
             color: Colors.green,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return new DetailPage();
+                // return new DetailPage();
+                return new AnimatedCrossFadeDemo();
               }));
             },
             child: Text("点击跳转第二个页面"),
@@ -229,6 +231,7 @@ class HomeState extends State<HomePage> {
       var jsonString = json.decode(_content);
       CodeBean codeBean = CodeBean.fromJson(jsonString);
       print("请求回来的数据codeBean=" + codeBean.toString());
+      Toast.show(codeBean.toString(), context);
       setState(() {
         netResult = "codeBean=${codeBean.toString()}";
       });

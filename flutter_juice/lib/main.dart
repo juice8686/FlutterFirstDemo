@@ -136,6 +136,13 @@ class MyBottomNaState extends State<MyBottomNavigationBar> {
         ),
       ),
       // theme: ThemeData(primarySwatch: Colors.blueGrey),
+          floatingActionButton: FloatingActionButton(
+            onPressed: (){
+              
+            },
+            tooltip: 'Update Text',
+            child: Icon(Icons.update),
+          ),
     ));
   }
 }
