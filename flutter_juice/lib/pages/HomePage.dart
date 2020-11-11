@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_juice/net/NetManager.dart';
+import 'package:flutter_juice/net/bean/CodeBean.dart';
+import 'package:flutter_juice/pages/DetailPage.dart';
 import 'package:toast/toast.dart';
 
 import 'dart:async';
@@ -22,162 +24,171 @@ class HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return SingleChildScrollView(
-        child: Column(
+      child: Column(
         children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(0.0),
-          width: MediaQuery.of(context).size.width,
-          alignment: AlignmentDirectional.center,
-          height: 37.0,
-          decoration: BoxDecoration(
-              color: Color.fromARGB(255, 237, 236, 237),
-              borderRadius: BorderRadius.circular(24.0)),
-          child: TextField(
-            // onSubmitted: onSubmitted,
-            // onTap: onTab,
-            cursorColor: Color.fromARGB(255, 0, 189, 96),
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(top: 8.0),
-                border: InputBorder.none,
-                hintText: 'please input',
-                hintStyle: TextStyle(
-                    fontSize: 17, color: Color.fromARGB(255, 192, 191, 191)),
-                prefixIcon: Icon(
-                  Icons.search,
-                  size: 25,
-                  color: Color.fromARGB(255, 128, 128, 128),
-                )),
-            style: TextStyle(fontSize: 17),
-          ),
-        ),
-        Wrap(
-          children: <Widget>[
-            Expanded(
-              child: RaisedButton(
-                color: Colors.blueGrey,
-                child: Text('Dart 原生的网络请求 HttpClient'),
-                onPressed: () {
-                  print("点击处理");
-                },
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: Colors.green,
-                child: Text('库 http'),
-                onPressed: () {
-                  print("点击处理");
-                },
-              ),
-            ),
-            Expanded(
-              child: RaisedButton(
-                color: Colors.red,
-                child: Text(netResult),
-                onPressed: () {
-                  print("点击处理Flutter 发布的 dio");
-                  // getRequest();
-                  postRequest();
-                },
-              ),
-            )
-          ],
-        ),
-        SizedBox(height: 10),
-        Row(
-          children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Container(
-                  height: 180,
-                  child: Image.network(
-                      "https://www.itying.com/images/flutter/2.png",
-                      fit: BoxFit.cover),
-                )),
-            SizedBox(width: 10),
-            Expanded(
-                flex: 1,
-                child: Container(
-                    height: 180,
-                    child: ListView(
-                      children: <Widget>[
-                        Container(
-                          height: 85,
-                          child: Image.network(
-                              "https://www.itying.com/images/flutter/3.png",
-                              fit: BoxFit.cover),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 85,
-                          child: Image.network(
-                              "https://www.itying.com/images/flutter/3.png",
-                              fit: BoxFit.cover),
-                        )
-                      ],
-                    ))),
-            Expanded(
-                flex: 1,
-                child: Container(
-                    height: 180,
-                    child: ListView(
-                      children: <Widget>[
-                        Container(
-                          height: 85,
-                          child: Image.network(
-                              "https://www.itying.com/images/flutter/3.png",
-                              fit: BoxFit.cover),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 85,
-                          child: Image.network(
-                              "https://www.itying.com/images/flutter/3.png",
-                              fit: BoxFit.cover),
-                        )
-                      ],
-                    ))),
-          ],
-        ),
-        Center(
-          child: Column(
-            children: <Widget>[
-              CountDownWidget(
-                onCountDownFinishCallBack: (bool value, String reault) {
-                  if (value) {
-                    setState(() {
-                      // showAd = false;
-                      Toast.show("倒计时结束回调$reault", context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-        InkWell(
-          child: Container(
-            // margin: EdgeInsets.fromLTRB(10,12,12,12),
-            margin: EdgeInsets.all(10),
+          Container(
+            margin: EdgeInsets.all(0.0),
             width: MediaQuery.of(context).size.width,
             alignment: AlignmentDirectional.center,
-            height: 67.0,
-            // decoration: BoxDecoration(
-            //     color: Color.fromARGB(255, 237, 236, 237),
-            //     borderRadius: BorderRadius.circular(4.0)),
-            child: Text(
-              '水波纹效果',
-              style: TextStyle(fontSize: 13.0, color: Colors.green),
+            height: 37.0,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 237, 236, 237),
+                borderRadius: BorderRadius.circular(24.0)),
+            child: TextField(
+              // onSubmitted: onSubmitted,
+              // onTap: onTab,
+              cursorColor: Color.fromARGB(255, 0, 189, 96),
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.only(top: 8.0),
+                  border: InputBorder.none,
+                  hintText: 'please input',
+                  hintStyle: TextStyle(
+                      fontSize: 17, color: Color.fromARGB(255, 192, 191, 191)),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    size: 25,
+                    color: Color.fromARGB(255, 128, 128, 128),
+                  )),
+              style: TextStyle(fontSize: 17),
             ),
           ),
-          onTap: () {
-            print('水波纹效果');
-            // Router.push(context, Router.personDetailPage,
-            //     {'personImgUrl': imgUrl, 'id': id});
-          },
-        ),
-      ],
+          Wrap(
+            children: <Widget>[
+              Expanded(
+                child: RaisedButton(
+                  color: Colors.blueGrey,
+                  child: Text('Dart 原生的网络请求 HttpClient'),
+                  onPressed: () {
+                    print("点击处理");
+                  },
+                ),
+              ),
+              Expanded(
+                child: RaisedButton(
+                  color: Colors.green,
+                  child: Text('库 http'),
+                  onPressed: () {
+                    print("点击处理");
+                  },
+                ),
+              ),
+              Expanded(
+                child: RaisedButton(
+                  color: Colors.red,
+                  child: Text(netResult),
+                  onPressed: () {
+                    print("点击处理Flutter 发布的 dio");
+                    // getRequest();
+                    postRequest();
+                  },
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: 180,
+                    child: Image.network(
+                        "https://www.itying.com/images/flutter/2.png",
+                        fit: BoxFit.cover),
+                  )),
+              SizedBox(width: 10),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      height: 180,
+                      child: ListView(
+                        children: <Widget>[
+                          Container(
+                            height: 85,
+                            child: Image.network(
+                                "https://www.itying.com/images/flutter/3.png",
+                                fit: BoxFit.cover),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            height: 85,
+                            child: Image.network(
+                                "https://www.itying.com/images/flutter/3.png",
+                                fit: BoxFit.cover),
+                          )
+                        ],
+                      ))),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                      height: 180,
+                      child: ListView(
+                        children: <Widget>[
+                          Container(
+                            height: 85,
+                            child: Image.network(
+                                "https://www.itying.com/images/flutter/3.png",
+                                fit: BoxFit.cover),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            height: 85,
+                            child: Image.network(
+                                "https://www.itying.com/images/flutter/3.png",
+                                fit: BoxFit.cover),
+                          )
+                        ],
+                      ))),
+            ],
+          ),
+          Center(
+            child: Column(
+              children: <Widget>[
+                CountDownWidget(
+                  onCountDownFinishCallBack: (bool value, String reault) {
+                    if (value) {
+                      setState(() {
+                        // showAd = false;
+                        Toast.show("倒计时结束回调$reault", context,
+                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          InkWell(
+            child: Container(
+              // margin: EdgeInsets.fromLTRB(10,12,12,12),
+              margin: EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width,
+              alignment: AlignmentDirectional.center,
+              height: 67.0,
+              // decoration: BoxDecoration(
+              //     color: Color.fromARGB(255, 237, 236, 237),
+              //     borderRadius: BorderRadius.circular(4.0)),
+              child: Text(
+                '水波纹效果',
+                style: TextStyle(fontSize: 13.0, color: Colors.green),
+              ),
+            ),
+            onTap: () {
+              print('水波纹效果');
+              // Router.push(context, Router.personDetailPage,
+              //     {'personImgUrl': imgUrl, 'id': id});
+            },
+          ),
+          RaisedButton(
+            color: Colors.green,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return new DetailPage();
+              }));
+            },
+            child: Text("点击跳转第二个页面"),
+          ),
+        ],
       ),
     );
   }
@@ -203,14 +214,27 @@ class HomeState extends State<HomePage> {
       receiveTimeout: 3000,
     );
     Dio dio = new Dio(options);
-    var response = await dio.post('/v2/banner/startup-page');
-    var _content = response.data.toString();
-    print("请求回来的数据=" + _content);
-    Toast.show("请求回来的数据=$_content", context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-    setState(() {
-      netResult = "我是结果=$_content";
-    });
+    // jsonObject.addProperty("verificationCode", code);
+    // jsonObject.addProperty("type", 2);//0，下单；1，展期；2，换设备登录
+    // jsonObject.addProperty("phone", phone);//0，下单；1，展期；2，换设备登录
+    // var response = await dio.post('/v2/banner/startup-page');
+    // var data={'verificationCode', "2332","type", 2,"phone", 1809893154645};
+    // var data={'verificationCode', "2332"};
+    // var data= Map.from({'verificationCode':"2332",'type':2,'phone':"1809898461"});
+    try {
+      var data={'verificationCode':'1231','type':2,'phone':'180816541654'}; //requestBody
+      var response = await dio.post('/v1/loan/sms/checkCodeByNoLogin',data:data);
+      var _content = response.toString();//todo 妈的，就是这里的问题，不能取 .data
+      print("原始数据=" + _content);
+      var jsonString = json.decode(_content);
+      CodeBean codeBean = CodeBean.fromJson(jsonString);
+      print("请求回来的数据codeBean=" + codeBean.toString());
+      setState(() {
+        netResult = "codeBean=${codeBean.toString()}";
+      });
+    } catch (e) {
+      print("请求回来的数据error=$e");
+    }
   }
 }
 
