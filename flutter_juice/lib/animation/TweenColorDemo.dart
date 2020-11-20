@@ -19,6 +19,12 @@ class _ScaleImageState extends State<TweenColorDemo>  with SingleTickerProviderS
     animation = ColorTween(begin: Colors.green, end: Colors.red).animate(controller)
       ..addListener(() {
         setState(()=>{});
+      })..addStatusListener((status) { //联级运算符，可以像builder模式一样调用，避免创建临时变量
+        if (status == AnimationStatus.completed) {
+          controller.reverse();//从大到小，然后从小到大循环
+        } else if (status == AnimationStatus.dismissed) {
+          // controller.forward();
+        }
       });
     controller.forward();
   }

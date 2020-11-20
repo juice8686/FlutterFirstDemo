@@ -13,7 +13,7 @@ import 'package:flutter_juice/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(MyApp());//这个是flutter框架遍历widgdt树-->Element(createState,build())---->RenderObj
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

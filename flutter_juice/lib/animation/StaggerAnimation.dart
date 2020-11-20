@@ -82,7 +82,7 @@ class _StaggerDemoState extends State<StaggerDemo>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child:Text("AnimatedBuilder的简单使用")),
+          title: Center(child:Text("组合动画的简单使用")),
           elevation: 0.0,
         ),
         body: GestureDetector(

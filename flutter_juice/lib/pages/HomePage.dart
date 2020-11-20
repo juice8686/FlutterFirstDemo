@@ -7,15 +7,18 @@ import 'package:flutter_juice/net/bean/CodeBean.dart';
 import 'package:flutter_juice/pages/DetailPage.dart';
 import 'file:///E:/flutter_juice/flutter_juice/lib/animation/AnimatedCrossFadeDemo.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter/gestures.dart';
 
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
+
   @override
-  State<StatefulWidget> createState() {
+  State<StatefulWidget> createState() {//flutter扫描widgt时调用createElement(),Elemnt构造方法时会触发此方法
     // TODO: implement createState
     return new HomeState();
   }
+
 }
 
 class HomeState extends State<HomePage> {
@@ -80,7 +83,13 @@ class HomeState extends State<HomePage> {
                   onPressed: () {
                     print("点击处理Flutter 发布的 dio");
                     // getRequest();
-                    postRequest();
+                    var future = postRequest();
+                    var stream = future.then((value) {
+                      print("点击处理Flutter future.then,value=$value");
+
+                    })..whenComplete((){
+                      print("点击处理Flutter future.whenComplete");
+                    })..asStream();
                   },
                 ),
               )
@@ -183,6 +192,9 @@ class HomeState extends State<HomePage> {
           RaisedButton(
             color: Colors.green,
             onPressed: () {
+              setState(() {
+                // widget.createElement();
+              });
               Navigator.push(context, MaterialPageRoute(builder: (_) {
                 // return new DetailPage();
                 return new AnimatedCrossFadeDemo();
@@ -190,6 +202,22 @@ class HomeState extends State<HomePage> {
             },
             child: Text("点击跳转第二个页面"),
           ),
+          RichText(
+            //富文本
+            text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: <InlineSpan>[
+                  TextSpan(text: '登陆即视为同意'),
+                  TextSpan(
+                    text: '《xxx服务协议》',
+                    style: TextStyle(color: Colors.red),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        print("跳转到协议页面");
+                      },
+                  ),
+                ]),
+          )
         ],
       ),
     );
@@ -208,7 +236,7 @@ class HomeState extends State<HomePage> {
   /**
    * 最简单的使用
    */
-  void postRequest() async {
+  Future<CodeBean> postRequest() async {
     // or new Dio with a BaseOptions instance.
     BaseOptions options = new BaseOptions(
       baseUrl: base_url,
@@ -224,9 +252,14 @@ class HomeState extends State<HomePage> {
     // var data={'verificationCode', "2332"};
     // var data= Map.from({'verificationCode':"2332",'type':2,'phone':"1809898461"});
     try {
-      var data={'verificationCode':'1231','type':2,'phone':'180816541654'}; //requestBody
-      var response = await dio.post('/v1/loan/sms/checkCodeByNoLogin',data:data);
-      var _content = response.toString();//todo 妈的，就是这里的问题，不能取 .data
+      var data = {
+        'verificationCode': '1231',
+        'type': 2,
+        'phone': '180816541654'
+      }; //requestBody
+      var response =
+          await dio.post('/v1/loan/sms/checkCodeByNoLogin', data: data);
+      var _content = response.toString(); //todo 妈的，就是这里的问题，不能取 .data
       print("原始数据=" + _content);
       var jsonString = json.decode(_content);
       CodeBean codeBean = CodeBean.fromJson(jsonString);
@@ -235,9 +268,47 @@ class HomeState extends State<HomePage> {
       setState(() {
         netResult = "codeBean=${codeBean.toString()}";
       });
+
+      return codeBean;
     } catch (e) {
       print("请求回来的数据error=$e");
     }
+  }
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    print("widgt生命周期=deactivate");
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("widgt生命周期=initState");
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    print("widgt生命周期=didChangeDependencies");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    print("widgt生命周期=dispose");
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    print("widgt生命周期=didUpdateWidget");
   }
 }
 
@@ -287,3 +358,17 @@ class _CountDownWidgetState extends State<CountDownWidget> {
     _timer?.cancel();
   }
 }
+
+
+class Clz {}
+mixin A on Clz { //被混入的类必须是Clz的子类。 对混入类的约束。
+  void a() {
+    print('A');
+  }
+}
+
+class Mix extends Clz with A {
+
+}
+
+

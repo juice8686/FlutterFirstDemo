@@ -24,7 +24,7 @@ class _ScaleImageState extends State<ScaleImageDemo>
 
     ///添加动画监听
     animation.addListener(() {
-      setState(() => {});
+      setState(() => {});//其实就是不断刷新widget,改变属性值
 ///  /    if(animation.isCompleted){
 ///        controller.reverse();
 ///      }else if(animation.isDismissed){
@@ -36,11 +36,11 @@ class _ScaleImageState extends State<ScaleImageDemo>
 
     //添加状态监听,也可以在addListener里面监听如上面代码
     animation.addStatusListener((status) {
-//        if (status == AnimationStatus.completed) {
-//          controller.reverse();//从大到小，然后从小到大循环
-//        } else if (status == AnimationStatus.dismissed) {
-//          controller.forward();
-//        }
+       if (status == AnimationStatus.completed) {
+         controller.reverse();//从大到小，然后从小到大循环
+       } else if (status == AnimationStatus.dismissed) {
+         controller.forward();
+       }
       });
 
     controller.forward();///动画开始
